@@ -1,0 +1,89 @@
+<!-- Calling the Query, to populate the table we are going to create -->
+{{#context}}
+{
+  "eecert": {
+    "collection": "End-Entity-Cert",
+    "query": {},
+    "hints": {"$orderby":{"IssuerDnO": 1}}
+  }
+}
+{{/context}}
+
+<html>
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <!-- Title -->
+  <title>WBA End-Entity Certificate Database</title>
+  <!-- Table Fonts and border settings -->
+</head>
+<style>
+
+  #eecerts {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #eecerts td, #eecerts th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #eecerts tr:nth-child(even){background-color: #f2f2f2;}
+
+  #eecerts tr:hover {background-color: #ddd;}
+  <! 
+
+  #eecerts th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+  }
+
+</style>
+
+<body onload='main()'>
+  <img src="https://wballiance.com/wp-content/uploads/2019/05/wbalogo2019.png" alt="WBA Logo">
+  </p>
+  <h2 style="font-family:Arial;">WBA Certificate Database</h2>
+  <h3 style="font-family:Arial;">End-Entity Certificates - Automated entry by I-CA</h3>
+  <h5 style="font-family:Arial;">(Please request an API Key from WBA PMO to enable POST updates to this database)</h5>
+  <p>
+
+  <table id="eecerts">
+    <tr>
+      <!-- Data within a table format -->
+      <th>WBAID</th>
+      <th>Organization</th>
+      <th>Country</th>
+      <th>Issued By</th>
+      <th>Valid From</th>
+      <th>Valid To</th>
+      <th>Serial No.</th>
+      <th>Policy OID</th>
+      <th>NAI Realms</th>
+    </tr>
+    {{#each eecert}}
+      <tr>
+        <!-- Collumn Names -->
+        <td>{{this.[subjectUid]}}</td>
+        <td>{{this.[subjectDnO]}}</td>
+        <td>{{this.[subjectDnC]}}</td>
+        <td>{{this.[issuerDnO]}} {{this.[issuerDnC]}}</td>
+        <td>{{this.[validNotBefore]}}</td>
+        <td>{{this.[validNotAfter]}}</td>
+        <td>{{this.[serialNumber]}}</td>
+        <td>{{this.[certPolicyOid]}}</td>
+        <td>
+          {{#each this.[sanDnsName]}}
+            <div>{{this.[realm]}}</div>
+          {{/each}}
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+
+</body>
+</html>
