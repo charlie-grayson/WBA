@@ -18,5 +18,4 @@ These would be within the restdb.io database, and call the appropriate functions
 
 Slack API URLs need to be inserted into the appropriate variables.
 
-Within End Entity Codehook, appropriate file path would need to be added within the afterPOST function.
 
