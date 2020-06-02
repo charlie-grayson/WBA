@@ -66,6 +66,7 @@ function afterPOST(req, res){
 // clean up codehook to remove entry if it submission does not adhere to policy, 
 // e.g., issuerDN does not correspond to API key used in API
     var query = {_id: req.body['_id']};
+    // Assumes collection name is end-entity-cert
     db.get("/rest/end-entity-cert",query,{},function (err,data) {
         if(!err){
             if (data[0].void){
