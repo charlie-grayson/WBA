@@ -1,9 +1,7 @@
 # WBA
 
 Work By Charlie Grayson.
-
 Licenced Under Apache 2.0.
-
 Licence Provided within the Repositry.
 
 All induvidual .hmtl files are within the Repositry. 
