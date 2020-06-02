@@ -53,12 +53,12 @@ function afterPOST(req, res){
 // e.g., WBAID does not correspond to API key used in API
   var query = {_id: req.body['_id']};
   // Obtaining data from database
-  db.get("/rest/hsp-end-entities",query,{},function (err,data) {
+  db.get("<<replace with data location within database>>",query,{},function (err,data) {
     if(!err){
       if (data[0].void){
 //        log.debug("record to be voided");
 // Delete Data from within database
-        db.delete("/rest/hsp-end-entity/"+req.body._id,{},function(err,result){
+        db.delete("<<replace with data location within database>>"+req.body._id,{},function(err,result){
           if (err){
             log.error("Unable to delete");
             res.end();
