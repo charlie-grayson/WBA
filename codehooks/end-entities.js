@@ -150,3 +150,62 @@ function beforePOST(req, res){
         }
     }
 }
+
+function afterPOST(req, res){
+    // 1. load an email template from the database
+    if (req.body.WBAMember == "Yes") {
+        // do not send a welcome email
+        res.end();
+    }
+    
+    db.get('/rest/emailtemplates',{title: "Welcome"}, {}, function(error, data){
+            
+        // 2. merge record with email template
+        var htmlmail = template(data[0].template, req.body);
+        var mailopt = {
+            to: req.body.ContactEmail,
+            subject: "Welcome to the WBA",
+            html: htmlmail,
+            company: "Wireless Broadband Alliance", // Email footer
+            sendername: "WBA Automated Email" // Email sendername, hides the email address
+        };
+        
+        // 3. send email
+//        log.debug("email template is: ", mailopt);
+        euSendMail(mailopt, function(error, body){
+            // end Codehook normally
+            res.end();
+        });
+//        res.end();
+    });
+}
+
+// standard restdb.io sendmail does not use the EU version, i.e., sends to 
+// api.mailgun.net AND NOT api.eu.mailgun.net
+function euSendMail(body, callback) {
+    var YOUR_DOMAIN_NAME = context.settings.mailgun.domain;
+    var apikey = context.settings.mailgun.apikey;
+
+    var options = {
+        method: "POST",
+        url: "https://api:"+apikey+"@api.eu.mailgun.net/v3/"+YOUR_DOMAIN_NAME+"/messages",
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded'
+        },
+        form: {
+            from: 'Wireless Broadband Alliance <WBA@emaildomain>',
+            to: body.to,
+            subject: body.subject,
+            html: body.html 
+        }
+    };
+//    log.info("Sending mail with Mailgun...");
+//    log.debug("email post is: ", options);
+    
+    
+    request(options, function (error, response, body) {
+      if (error) throw new Error(error);
+
+      callback(body);
+    });
+}
