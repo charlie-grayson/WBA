@@ -1,0 +1,8 @@
+{
+  "slack": {
+    "url": "<instert production slack URL here>"
+  },
+  "apikeys": {
+    "master": "<insert master APIK key here>"
+  }
+}
