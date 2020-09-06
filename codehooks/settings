@@ -1,8 +1,12 @@
 {
+  "mailgun": {
+    "domain": "<insert email domain here>",
+    "apikey": "<insert API key here>"
+  },
   "slack": {
-    "url": "<instert production slack URL here>"
+    "url": "<insert production slack URL here>"
   },
   "apikeys": {
-    "master": "<insert master APIK key here>"
+    "master": "<insert master API key here>"
   }
 }
