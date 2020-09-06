@@ -6,10 +6,10 @@ Licence Provided within the Repositry.
 
 This directory contains the codehooks to be used with restdb.io database to implement the database logic for WBA.
 
-##WBA Members Collection
+## WBA Members Collection
 1) the beforePOST function is used to advertise the allocation of a new PrimaryID to Slack
 
-##End-Entity Collection
+## End-Entity Collection
 1) The beforeGET function is used to ensure that only WBA brokers can GET the end-entity records that they have assigned
 2) The beforePOST function is used to ensure only a WBA member with an allocated API key is able to allocate identities under its primary ID
 3) The beforePOST function is used to advertise the assignment of a new WBAID to Slack
