@@ -31,8 +31,8 @@ if os.path.exists("config.txt"):
     apikey = apikey[apikey.find(":")+1:-1]
 
     check = False
-    cols = [0, 1, 2, 3, 4]
-    resources = ["Category", "Member", "Contact Person", "Company ID", "Country Code"]
+    cols = [2, 3, 4, 5, 6]
+    resources = ["Member", "Type", "Contact Person", "Company ID", "Country ISO (Opt)"]
 #these column headings are checked to see if they are correct in the xlsx
 
 
@@ -51,7 +51,7 @@ if os.path.exists("config.txt"):
             print ("Error in reading", filename)
         if check == True:
             try:
-                data = pd.read_excel(filename, sheet_name='WBAID Members', usecols=cols, skiprows = 0)
+                data = pd.read_excel(filename, sheet_name='WBAID Members', usecols=cols, skiprows = 1)
             except Exception:
                 check = False
                 print("Sheet named WBAID Members not found")
@@ -68,7 +68,7 @@ if os.path.exists("config.txt"):
         i=i+1
 
 
-    df = pd.read_excel (filename, sheet_name='WBAID Members', usecols=cols)
+    df = pd.read_excel (filename, sheet_name='WBAID Members', usecols=cols, skiprows = 1)
 
 
     headers = {
@@ -83,12 +83,18 @@ if os.path.exists("config.txt"):
 #    print (response, response.text, response.json())
 
 
+    #Check that CURL POST is working
+#    json = "{ \"Company\": \"Dummy Company\" , \"Category\": \"General\", \"Contact\": \"John Smith\", \"PrimaryID\": \"Dummy\", \"CountryCode\": \"US\" }"
+#    response = requests.post(url, headers=headers, data=json)
+#    print (response.text, response.json)
+#    print ("status code ", response.status_code)
+
     print ("Parsed Array Information")
     for index, row in df.iterrows():
         json = "{ \"Company\": \"" + row['Member'] + "\" , \"Category\": \"" + row[
-            'Category'] + "\",\"Contact\": \"" + row[
+            'Type'] + "\",\"Contact\": \"" + row[
             'Contact Person'] + "\", \"PrimaryID\": \"" + row['Company ID'] + "\", \"CountryCode\": \"" + row[
-                   'Country Code'] + "\" }"
+                   'Country ISO (Opt)'] + "\" }"
 
         # check that new database has same field names as above
         print (json)
