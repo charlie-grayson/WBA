@@ -1,10 +1,12 @@
 {
   "mailgun": {
     "domain": "<insert email domain here>",
-    "apikey": "<insert API key here>"
+    "apikey": "<insert API key here>",
+    "address": "Wireless Broadband Alliance <WBA@wballiance.orm>"
   },
   "slack": {
-    "url": "<insert production slack URL here>"
+    "url": "<insert production slack URL for sub ID here>",
+    "certurl": "<insert production slack URL for certificate issuance here>",
   },
   "apikeys": {
     "master": "<insert master API key here>"
