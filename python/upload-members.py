@@ -83,12 +83,6 @@ if os.path.exists("config.txt"):
 #    print (response, response.text, response.json())
 
 
-    #Check that CURL POST is working
-#    json = "{ \"Company\": \"Dummy Company\" , \"Category\": \"General\", \"Contact\": \"John Smith\", \"PrimaryID\": \"Dummy\", \"CountryCode\": \"US\" }"
-#    response = requests.post(url, headers=headers, data=json)
-#    print (response.text, response.json)
-#    print ("status code ", response.status_code)
-
     print ("Parsed Array Information")
     for index, row in df.iterrows():
         json = "{ \"Company\": \"" + row['Member'] + "\" , \"Category\": \"" + row[
