@@ -22,16 +22,3 @@ This directory contains the codehooks to be used with restdb.io database to impl
 4) The beforePOST function is used to advertise the issueance of a certificate to Slack
 5) The beforePUT function is used to ensure only the holder of the API key is able to update the status of a certificate from issued to revoked
 
-All induvidual .hmtl files are within the Repositry. 
-
-All .html files are commented, and are the same in code structure, so don't get confused with which one is which.
-
-All contain the example code for implimenting appropriate output to the database within Restdb.io.
-
-All necessary data would be stored within the restdb.io database.
-
-Codehooks provided are within a .js format.
-
-These would be within the restdb.io database, and call the appropriate functions.
-
-Slack API URLs need to be inserted into the appropriate variables.
