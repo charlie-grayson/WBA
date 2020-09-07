@@ -122,7 +122,7 @@ function beforePOST(req, res){
                                 
                                 // now need to post issuance to SLACK 
                                 var slackmatch = {
-                                "message": `A new WBA certificate was issued by ${issuer} with Subject DN UID=${data2.WBAID} `,
+                                "message": `A new WBA certificate was issued by ${issuer} with Subject DN UID=${data2[0].WBAID} `,
                                 "slackhookurl": slackhookurl,
                                 "channel": "#subid-allocation"	
                             // need to update with production channel for certificate announcements
