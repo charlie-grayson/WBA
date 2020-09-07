@@ -2,7 +2,7 @@
   "mailgun": {
     "domain": "<insert email domain here>",
     "apikey": "<insert API key here>",
-    "address": "Wireless Broadband Alliance <WBA@wballiance.orm>"
+    "address": "Wireless Broadband Alliance <WBA@wballiance.com>"
   },
   "slack": {
     "url": "<insert production slack URL for sub ID here>",
