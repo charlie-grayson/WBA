@@ -10,5 +10,10 @@ The codehook directory contains the codehooks to be used with restdb.io database
 ## Web
 The web directory contains example html code to be used with restdb.io to display different collections
 
+## Python
+The python directory contains code to manually upload from xlsx to the database for members, subIds and certificates
+
+
+
 
 
