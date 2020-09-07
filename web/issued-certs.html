@@ -1,0 +1,78 @@
+<!-- Calling the Query, to populate the table we are going to create -->
+{{#context}}
+{
+  "hsp": {
+    "collection": "issued-certificates",
+    "query": {},
+    "hints": {"$orderby":{"CompanyName": 1}}
+  }
+}
+{{/context}}
+
+<html>
+<head>
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+  <title>WBA Issued Certificates Information</title>
+</head>
+<!-- Table Fonts and border settings -->
+<style>
+#hsp {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 70%;
+}
+
+#hsp td, #hsp th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#hsp tr:nth-child(even){background-color: #f2f2f2;}
+
+#hsp tr:hover {background-color: #ddd;}
+
+#hsp th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+</style>
+
+<body onload='main()'>
+  <img src="https://wballiance.com/wp-content/uploads/2019/05/wbalogo2019.png" alt="WBA Logo">
+  </p>
+  <h2 style="font-family:Arial;">WBA Issued Certificates Summary Information</h2>
+  <h3 style="font-family:Arial;">Automated entry by WBA Issuing I-CA</h3>
+  <h3 style="font-family:Arial;">(If you are a WBA Issuing I-CA, please request an API Key from WBA PMO to enable POST updates to this database)</h5>
+  <p>
+
+  <table id="hsp", style="width:1000px">
+    <tr>
+      <th>Issuer Organization</th>
+      <th>WBAID</th>
+      <th>Expiry Date</th>
+      <th>Type</th>
+      <th>Status</th>
+
+
+    </tr>
+    {{#each hsp}}
+      <tr>
+        <td>{{this.[IssuerDnOrg]}}</td>
+        <td>{{this.[SubjectDnUid]}}</td>
+        <td>{{this.[ExpiryDate]}}</td>
+        <td>{{this.[Type]}}</td>
+        <td>{{this.[Status]}}</td>
+      </tr>
+    {{/each}}
+  </table>
+  
+  <hr>
+  
+
+</body>
+</html>
