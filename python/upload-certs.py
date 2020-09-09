@@ -6,6 +6,7 @@
 import pandas as pd
 import os.path
 import requests
+import re
 
 pd.set_option('display.max_rows', None)
 dirpath = os.path.dirname(__file__)
@@ -71,6 +72,24 @@ if os.path.exists("config.txt"):
     df = pd.read_excel (filename, sheet_name='Certs', usecols=cols, skiprows = 3)
 
 
+    #REGEXP Checking
+
+    regexp = ["^[1-9][0-9]*$", ".*", "^[^_]*$", "^(([2]\d{3})(\-)((0[1-9]|1[0-2]))(\-)((0[1-9]|[12]\d|3[01])))$",
+          "^((End-Entity)|(Registration-Authority))$", "^((Issued)|(Revoked))$"]
+
+    for index, row in df.iterrows():
+        a = re.match (regexp[0], str(row['SerialNumber']))
+        b = re.match (regexp[1], row['IssuerDnOrg'])
+        c = re.match(regexp[2], row['SubjectDnUid'])
+        d = re.match(regexp[3], row['ExpiryDate'])
+        e = re.match(regexp[4], row['Type'])
+        f = re.match(regexp[5], row['Status'])
+        if (a and b and c and d and e and f):
+            print ("Certificate Record ", index, "REGEXP check PASSED")
+        else:
+            print("Certificate Record ", index, "REGEXP check FAILED - please correct and try again")
+            exit()
+    
     headers = {
         "Content-Type": "application/json"
     }
