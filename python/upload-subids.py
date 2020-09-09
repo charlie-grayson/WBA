@@ -6,6 +6,7 @@
 import pandas as pd
 import os.path
 import requests
+import re
 
 pd.set_option('display.max_rows', None)
 dirpath = os.path.dirname(__file__)
@@ -76,7 +77,20 @@ if os.path.exists("config.txt"):
     }
     headers["x-apikey"] = apikey
 
+# REGEXP Checking
+    regexp = [".*", ".*", ".*", ".*", ".*", ".*", "^((Yes)|(No))$", "^[^_]*$", "^[^_]*$", "^((VNP)|(HSP)|(VNP&HSP))$"]
 
+    for index, row in df.iterrows():
+        a = re.match (regexp[6], row['WBAMember'])
+        b = re.match (regexp[7], row['WBAAgent'])
+        c = re.match(regexp[8], row['WBAID'])
+        d = re.match(regexp[9], row['EntityType'])
+        if (a and b and c and d ):
+            print ("SubID Record ", index, "REGEXP check PASSED")
+        else:
+            print("SubID Record ", index, "REGEXP check FAILED - please correct and try again")
+            exit()
+            
     #code to check GET CURL works
 #    response = requests.get(url, headers=headers)
 #    print (response, response.text, response.json())
