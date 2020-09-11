@@ -11,7 +11,11 @@ import re
 
 pd.set_option('display.max_rows', None)
 dirpath = os.path.dirname(sys.argv[0])
-config_file = filename = os.path.join(dirpath, "config.cfg")
+
+if (sys.platform == "win32"):
+    config_file = filename = os.path.join(dirpath + "/", "config.cfg")
+else:
+    config_file = filename = os.path.join(dirpath, "config.cfg")
 
 print ("WBA BULK INSTALL ISSUED CERTIFICATE LIST FROM XLS TO RESTDB")
 if os.path.exists(config_file):
@@ -43,7 +47,11 @@ if os.path.exists(config_file):
     while check==False:
         check = True
         name = input("Enter filename of xls to upload: ")
-        filename = os.path.join(dirpath, name)
+        
+        if (sys.platform == "win32"):
+            filename = os.path.join(dirpath + "/", name)
+        else:
+            filename = os.path.join(dirpath, name)
 
         try:
             pd.read_excel(filename, na_values=["", " ", "-"])
