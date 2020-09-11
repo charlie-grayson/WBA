@@ -4,6 +4,6 @@
 
 Restdb.io configuration is read from config.cfg file
 
-*Note for Windows users* - make sure you have xlrd installed
+*Note for Windows users* - make sure you have xlrd installed otherwise pandas will *not* read the xlsx
 
     pip install xlrd
