@@ -58,7 +58,7 @@ Use the same Windows Command Prompt and type the following:
 Replace the dummy URLs with the URLs of the production database provided by WBA
 Relpace the dummy API key with the API key allocated to you by WBA
 
-**Do not add in any additiona carriage return/line feeds**
+**Do not add in any additional carriage return/line feeds**
 
 5. Copy the excel spreadsheet containing the information to be uploaded to the same directory as the *.py files
  
