@@ -18,14 +18,15 @@ In order to upgrade PIP in Windows, you’ll need to open the Windows Command Pr
 
 You can use the same Windows Command Prompt to enter the following in turn
 
-      >py -m pip install requests
-      >py -m pip insatll sys
-      >py -m pip install pandas
-      >py -m pip install sys
-      >py -m pip install os
-      >py -m pip install xlrd
-      >py -m pip install regex
-
+```
+>py -m pip install requests
+>py -m pip insatll sys
+>py -m pip install pandas
+>py -m pip install sys
+>py -m pip install os
+>py -m pip install xlrd
+>py -m pip install regex
+```
      
 3. Download the Python and config.cfg files from
 
@@ -48,8 +49,9 @@ Ensure the config.cfg file is stored in the same directoy as the *.py files
 The config.cfg needs to be edited using your preferred editor. One approach is to use notepad.
 
 Use the same Windows Command Prompt and type the following:
-
-    >notepad config.cfg
+```
+>notepad config.cfg
+```
 
 Replace the dummy URLs with the ones provided by WBA
 Relpace the dummy API with the API key allocated to you by WBA
@@ -63,15 +65,15 @@ The script check the sheet and columns are correctly formatted so please take ca
 Open the Windows Command Prompt and change to the directory where you have stored the *.py and *.cfg files
 
 To upload issued certificates, run the following command
-
-    >py wba_cert_upload.py
-    
+```
+>py wba_cert_upload.py
+```    
 To upload assigned identities, run the following command
-
-    >py wba_subid_upload.py
-    
+```
+>py wba_subid_upload.py
+```    
 To upload new WBA Member IDs, run the following command (**WBA PMO ONLY**)
-
-    >py wba_member_upload.py
-
+```
+>py wba_member_upload.py
+```
 In all cases, the filename needs to be entered corresponding to the *.xlsx to be uploaded.
