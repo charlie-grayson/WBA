@@ -10,7 +10,9 @@ This should also install pip to enable you to insatll additional packages
 
 In order to upgrade PIP in Windows, you’ll need to open the Windows Command Prompt, and then type/copy the command below
 
-     >py -m pip install --upgrade pip
+```
+>py -m pip install --upgrade pip
+```
 
 2. Install the required packages for the Python scripts
 
