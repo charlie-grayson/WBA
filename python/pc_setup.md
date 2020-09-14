@@ -10,19 +10,19 @@ This should also install pip to enable you to insatll additional packages
 
 In order to upgrade PIP in Windows, you’ll need to open the Windows Command Prompt, and then type/copy the command below
 
-    >py -m pip install --upgrade pip
+     >py -m pip install --upgrade pip
 
 2. Install the required packages for the Python scripts
 
 You can use the same Windows Command Prompt to enter the following in turn
 
-     >py -m pip install requests
-     >py -m pip insatll sys
-     >py -m pip install pandas
-     >py -m pip install sys
-     >py -m pip install os
-     >py -m pip install xlrd
-     >py -m pip install regex
+      >py -m pip install requests
+      >py -m pip insatll sys
+      >py -m pip install pandas
+      >py -m pip install sys
+      >py -m pip install os
+      >py -m pip install xlrd
+      >py -m pip install regex
 
      
 3. Download the Python and config.cfg files from
