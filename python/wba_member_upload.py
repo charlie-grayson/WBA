@@ -3,104 +3,76 @@
 # WBA Bulk upload script for WBA-MEMBERS
 # takes input from XLSX and uploads to restdb.io
 
-import pandas as pd
-import os.path
-import requests
-import sys
+def set_api_and_url(filename):
+    config = open(filename, "r")
+    # config.txt has four lines formatted as follows
+    # MEMBER-URL:<URL of member database>
+    # SUBID-URL:<URL of end-entity database>
+    # CERT-URL:<URL of certificate database>
+    # API-KEY:<Master API key for database>
 
-pd.set_option('display.max_rows', None)
-dirpath = os.path.dirname(sys.argv[0])
+    # config.txt file must be in same directoy as python .py
 
-if (sys.platform == "win32"):
-    config_file = filename = os.path.join(dirpath + "/", "config.cfg")
-else:
-    config_file = filename = os.path.join(dirpath, "config.cfg")
+    local_url = config.readline()
+    subid_url = config.readline() #dummy read not used in this script
+    cert_url = config.readline() #dummy read not used in this script
+    local_apikey = config.readline()
 
-print ("WBA BULK INSTALL MEMBER LIST FROM XLS TO RESTDB")
-if os.path.exists(config_file):
+    local_url = local_url[local_url.find(":") + 1:-1]
+    local_apikey = local_apikey[local_apikey.find(":") + 1:-1]
 
-    config = open(config_file,"r")
-#config.txt has four lines formatted as follows
-#MEMBER-URL:<URL of member database>
-#SUBID-URL:<URL of end-entity database>
-#CERT-URL:<URL of certificate database>
-#API-KEY:<Master API key for database>
+    return (local_url,local_apikey)
 
-#config.txt file must be in same directoy as python .py
+def enter_and_check_excel(path):
+    import pandas as pd
+    import os.path
 
-    url = config.readline()
-    subid_url = config.readline()
-    cert_url = config.readline()
-    apikey = config.readline()
-
-    url = url[url.find(":")+1:-1]
-    apikey = apikey[apikey.find(":")+1:-1]
-
+    pd.set_option('display.max_rows', None)
     check = False
     cols = [2, 3, 4, 5, 6]
     resources = ["Member", "Type", "Contact Person", "Company ID", "Country ISO (Opt)"]
-#these column headings are checked to see if they are correct in the xlsx
 
-
-    while check==False:
+    while check == False:
         check = True
         name = input("Enter filename of xls to upload: ")
-        
-        if (sys.platform == "win32"):
-            filename = os.path.join(dirpath + "/", name)
-        else:
-            filename = os.path.join(dirpath, name)
-            
+        filename = os.path.join(path, name)
+
         try:
             pd.read_excel(filename, na_values=["", " ", "-"])
         except NameError:
             check = False
-            print ("File Not Found.")
+            print("File Not Found.")
         except Exception:
             check = False
-            print ("Error in reading", filename)
+            print("Error in reading", filename)
         if check == True:
             try:
-                data = pd.read_excel(filename, sheet_name='WBAID Members', usecols=cols, skiprows = 1)
-            except Exception:
+                local_data = pd.read_excel(filename, sheet_name='WBAID Members', usecols=cols, skiprows = 1)
+            except Exception as Ex:
                 check = False
                 print("Sheet named WBAID Members not found")
         if check == False:
             print(' Please re-enter')
 
-    # check columns are formtted correctly
-    i=0
-    for col in data.columns:
-        if (col!=resources[i]):
-            check = False
-            print('Sheet named WBAID Members has badly formated columns')
+    #  check columns are formtted correctly
+    i = 0
+    for col in local_data.columns:
+        if (col != resources[i]):
+            print('Sheet named WBAID Members has badly formatted columns')
             exit()
-        i=i+1
+        i = i + 1
+    return (local_data)
 
-
-    df = pd.read_excel (filename, sheet_name='WBAID Members', usecols=cols, skiprows = 1)
-
+def post_data(local_data, local_url, local_apikey):
+    import requests
 
     headers = {
         "Content-Type": "application/json"
     }
-    headers["x-apikey"] = apikey
+    headers["x-apikey"] = local_apikey
 
-
-
-    #code to check GET CURL works
-#    response = requests.get(url, headers=headers)
-#    print (response, response.text, response.json())
-
-
-    #Check that CURL POST is working
-#    json = "{ \"Company\": \"Dummy Company\" , \"Category\": \"General\", \"Contact\": \"John Smith\", \"PrimaryID\": \"Dummy\", \"CountryCode\": \"US\" }"
-#    response = requests.post(url, headers=headers, data=json)
-#    print (response.text, response.json)
-#    print ("status code ", response.status_code)
-
-    print ("Parsed Array Information")
-    for index, row in df.iterrows():
+    print("Parsed Array Information")
+    for index, row in local_data.iterrows():
         json = "{ \"Company\": \"" + row['Member'] + "\" , \"Category\": \"" + row[
             'Type'] + "\",\"Contact\": \"" + row[
             'Contact Person'] + "\", \"PrimaryID\": \"" + row['Company ID'] + "\", \"CountryCode\": \"" + row[
@@ -108,11 +80,32 @@ if os.path.exists(config_file):
 
         # check that new database has same field names as above
         print (json)
-        response = requests.post(url, headers=headers, data=json)
+        response = requests.post(local_url, headers=headers, data=json)
         if response.status_code>=400:
             print ("Error uploading new member ", row['Member'], " to the database")
             print (response.text)
-else:
-    print("config.cfg file Not Found.")
+    return
+
+def main():
+    import os.path
+    import sys
+
+    print ("WBA BULK INSTALL MEMBER LIST FROM XLS TO RESTDB")
+
+    dirpath = os.path.dirname(sys.argv[0])
+    config_file = os.path.join(dirpath, "config.cfg")
+
+    if os.path.exists(config_file):
+
+        url, apikey = set_api_and_url(config_file)
+        df = enter_and_check_excel(dirpath)
+        post_data(df,url,apikey)
+
+    else:
+        print("config.cfg file Not Found.")
+
+if __name__ == "__main__":
+    main()
+
 
 
