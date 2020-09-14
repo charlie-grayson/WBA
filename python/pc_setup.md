@@ -32,7 +32,6 @@ You can use the same Windows Command Prompt to enter the following in turn
 
 [WBA/python at master · charlie-grayson/WBA · GitHub](https://github.com/charlie-grayson/WBA/tree/master/python)
 
-The three programs are:
 Script Name | Description
 ------------ | -------------
 wba_cert_upload.py | uplaod issued certificates to restdb.io
@@ -40,7 +39,7 @@ wba_subid_upload.py | uplaod assigned SubIDs  to restdb.io
 wba_member_upload.py | uplaod WBA primary members to restdb.io
 
 
-**NOTE: The wba_member-upload.py script CANNOT be used with a regular WBA Agent API key**
+**NOTE: The wba_member_upload.py script CANNOT be used with a regular WBA Agent API key**
 
 Ensure the config.cfg file is stored in the same directoy as the *.py files
 
@@ -49,6 +48,7 @@ Ensure the config.cfg file is stored in the same directoy as the *.py files
 The config.cfg needs to be edited using your preferred editor. One approach is to use notepad.
 
 Use the same Windows Command Prompt and type the following:
+
 ```
 >notepad config.cfg
 ```
@@ -65,15 +65,21 @@ The script check the sheet and columns are correctly formatted so please take ca
 Open the Windows Command Prompt and change to the directory where you have stored the *.py and *.cfg files
 
 To upload issued certificates, run the following command
+
 ```
 >py wba_cert_upload.py
-```    
+```
+
 To upload assigned identities, run the following command
+
 ```
 >py wba_subid_upload.py
 ```    
+
 To upload new WBA Member IDs, run the following command (**WBA PMO ONLY**)
+
 ```
 >py wba_member_upload.py
 ```
+
 In all cases, the filename needs to be entered corresponding to the *.xlsx to be uploaded.
