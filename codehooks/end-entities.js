@@ -12,10 +12,10 @@ var beforeGET = function(req, res) {
     if (!req.hint['#usersession']['email'])
     // the usersession with valid email is used when the restdb web page requests the end-entities
     {
-        let apikey = req.hint['#headers']["x-apikey"];
-        let query = {AgentAPIKey: req.hint['#headers']["x-apikey"]};
-        let hint = {};
-        let agent = "";
+        var apikey = req.hint['#headers']["x-apikey"];
+        var query = {AgentAPIKey: req.hint['#headers']["x-apikey"]};
+        var hint = {};
+        var agent = "";
         if (!apikey) {
         // no API-Key means GET was received from DB user interface and therefore needs
         // to return all records
@@ -70,8 +70,8 @@ function beforePOST(req, res){
   var wbaAgent = req.body['WBAAgent'];
   var wbaid = req.body['WBAID'];
   var subId;
-  let query = {Company: req.body['WBAAgent']};
-  let hint = {};
+  var query = {Company: req.body['WBAAgent']};
+  var hint = {};
   var syntaxCheck = 0;
   
   // automatically populate the date created field for all posts
