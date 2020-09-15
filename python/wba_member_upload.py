@@ -13,10 +13,12 @@ def set_api_and_url(filename):
 
     # config.txt file must be in same directoy as python .py
 
-    local_url = config.readline()
-    subid_url = config.readline() #dummy read not used in this script
-    cert_url = config.readline() #dummy read not used in this script
-    local_apikey = config.readline()
+    lines = config.readlines()
+    
+    local_url = lines[0]
+#    subid_url = lines[2] #dummy read not used in this script
+#    cert_url = lines[3] #dummy read not used in this script
+    local_apikey = lines[4]
 
     local_url = local_url[local_url.find(":") + 1:-1]
     local_apikey = local_apikey[local_apikey.find(":") + 1:-1]
