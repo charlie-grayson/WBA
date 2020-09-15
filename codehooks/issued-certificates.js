@@ -15,10 +15,10 @@ var beforeGET = function(req, res) {
     // the usersession with valid email is used when the restdb web page requests the end-entities
     {
         
-        let apikey = req.hint['#headers']["x-apikey"];
-        let query = {IssuerAPIKey: req.hint['#headers']["x-apikey"]};
-        let hint = {};
-        let issuer = "";
+        var apikey = req.hint['#headers']["x-apikey"];
+        var query = {IssuerAPIKey: req.hint['#headers']["x-apikey"]};
+        var hint = {};
+        var issuer = "";
 
         if (!apikey) {
         // no API-Key means GET was received from DB user interface and therefore needs
@@ -71,13 +71,13 @@ function beforePOST(req, res){
 
 //  log.debug("REQ.HINT: ",req.hint);
 
-    let slackhookurl = context.settings.slack.certurl;
-    let who = req.hint['#usersession'].email || "REST API";
-    let apikey = req.hint['#headers']["x-apikey"];
-    let issuer = req.body['IssuerDnOrg'];
-    let wbaidquery = {WBAID: req.body['SubjectDnUid']};
-    let issuerquery = {IssuerDnO : req.body['IssuerDnOrg']};
-    let hint = {};
+    var slackhookurl = context.settings.slack.certurl;
+    var who = req.hint['#usersession'].email || "REST API";
+    var apikey = req.hint['#headers']["x-apikey"];
+    var issuer = req.body['IssuerDnOrg'];
+    var wbaidquery = {WBAID: req.body['SubjectDnUid']};
+    var issuerquery = {IssuerDnO : req.body['IssuerDnOrg']};
+    var hint = {};
     
 // automatically populate the created field
     req.body['DateCreated'] = req.body['_created'];
@@ -159,9 +159,9 @@ function beforePUT(req, res){
 
     var apikey = req.hint['#headers']["x-apikey"];
     var issuer = req.body['IssuerDnOrg'];
-    let objectquery = {objectID: req.body['objectID']};
-    let issuerquery = {IssuerDnO: req.body['IssuerDnOrg']};
-    let hint = {};
+    var objectquery = {objectID: req.body['objectID']};
+    var issuerquery = {IssuerDnO: req.body['IssuerDnOrg']};
+    var hint = {};
 
     if (!apikey) {
         // no API-Key means PUT was received from user interface
