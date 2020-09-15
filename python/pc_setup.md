@@ -40,14 +40,15 @@ wba_member_upload.py | upload WBA primary members to restdb.io
 
 **NOTE: The wba_member_upload.py script CANNOT be used with a regular WBA Agent API key**
 
-To download the files, navigate to the top level project directory https://github.com/charlie-grayson/WBA. Click on the **Code** icon and select the **Download ZIP** option. Open the zip file and save the required \*.py scripts and config.cfg file in the same directory on your PC.
-
+To download the files, navigate to the top level project directory https://github.com/charlie-grayson/WBA. Click on the **Code** icon and select the **Download ZIP** option. Open the zip file and save the required \*.py scripts and config.cfg file in the some directory on your PC.
 
 4. Edit the config.cfg file
 
+Change the directory to the location where you stored the python and config fiiles
+
 The config.cfg needs to be edited using your preferred editor. One approach is to use notepad.
 
-Use the same Windows Command Prompt and type the following:
+Use the same Windows Command Prompt and type the following, where ">" represents the windows prompt and should not be copied.
 
 ```
 >notepad config.cfg
