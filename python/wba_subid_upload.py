@@ -22,20 +22,19 @@ def set_api_and_url(filename):
     local_apikey = local_apikey[local_apikey.find(":") + 1:-1]
 
     validate_url(local_url)
-
-    return (local_url,local_apikey)
+    
+    return (local_url,local_apikey)
 
 def validate_url(local_url):
-    import re
-
-    # REGEXP Checking against expression for valid URL
-    # catches situation where user has not edited default config file
-    url_regexp = "^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
-    if not re.match(url_regexp, local_url):
-        print ("URL in config.cfg is badly formatted")
-        exit()
-
-    return
+    import re
+    
+    # REGEXP Checking against expression for valid URL
+    # catches situation where user has not edited default config file
+    url_regexp = "^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
+    if not re.match(url_regexp, local_url):
+        print ("URL in config.cfg is badly formatted")
+        exit()
+    return
 
 def enter_and_check_excel(path):
     import pandas as pd
