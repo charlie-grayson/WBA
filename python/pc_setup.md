@@ -10,7 +10,7 @@ This will also install the PIP program which is used to install the additional p
 
 2. Upgrade pip
 
-To upgrade PIP in Windows you will need to open the Windows Command Prompt App (search for "cmd"). Type/copy the command below in the command line
+To upgrade PIP in Windows you will need to open the Windows Command Prompt App (search for "cmd"). Type/copy the command below in the command line, , where ">" represents the windows prompt and should not be copied.
 
 ```
 >py -m pip install --upgrade pip
@@ -48,7 +48,7 @@ Change the directory to the location where you stored the python and config fiil
 
 The config.cfg needs to be edited using your preferred editor. One approach is to use notepad.
 
-Use the same Windows Command Prompt and type the following, where ">" represents the windows prompt and should not be copied.
+Use the same Windows Command Prompt and type the following:
 
 ```
 >notepad config.cfg
