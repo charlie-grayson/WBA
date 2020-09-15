@@ -10,10 +10,10 @@ This will also install the PIP program which is used to install the additional p
 
 2. Upgrade pip
 
-To upgrade PIP in Windows you will need to open the Windows Command Prompt App (search for "cmd"). Type/copy the command below in the command line, , where ">" represents the windows prompt and should not be copied.
+To upgrade PIP in Windows you will need to open the Windows Command Prompt App (search for "cmd"). Type/copy the command below in the command line.
 
 ```
->py -m pip install --upgrade pip
+C:\Users\UserName> py -m pip install --upgrade pip
 ```
 
 2. Install the packages used by the Python scripts
@@ -21,10 +21,10 @@ To upgrade PIP in Windows you will need to open the Windows Command Prompt App (
 Use the same Windows Command Prompt to enter the following in turn
 
 ```
->py -m pip install requests
->py -m pip install pandas
->py -m pip install xlrd
->py -m pip install regex
+C:\Users\UserName> py -m pip install requests
+C:\Users\UserName> py -m pip install pandas
+C:\Users\UserName> py -m pip install xlrd
+C:\Users\UserName> py -m pip install regex
 ```
 
 3. Download the Python scripts and config.cfg file from
@@ -39,18 +39,16 @@ wba_member_upload.py | upload WBA primary members to restdb.io
 
 **NOTE: The wba_member_upload.py script CANNOT be used with a regular WBA Agent API key**
 
-To download the files, navigate to the top level project directory https://github.com/charlie-grayson/WBA. Click on the **Code** icon and select the **Download ZIP** option. Open the zip file and save the required \*.py scripts and config.cfg file in the some directory on your PC.
+To download the files, navigate to the top level project directory https://github.com/charlie-grayson/WBA. Click on the **Code** icon and select the **Download ZIP** option. Open the zip file and save the required \*.py scripts and config.cfg file in the some directory on your PC, e.g., C:\Users\UserName\WBA
 
 4. Edit the config.cfg file
-
-Change the directory to the location where you stored the python and config fiiles
 
 The config.cfg needs to be edited using your preferred editor. One approach is to use notepad.
 
 Use the same Windows Command Prompt and type the following:
 
 ```
->notepad config.cfg
+C:\Users\UserName> notepad C:\Users\UserName\WBA\config.cfg
 ```
 
 Replace the dummy URLs with the URLs of the production database provided by WBA
