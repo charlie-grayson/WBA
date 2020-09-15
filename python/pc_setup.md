@@ -22,7 +22,6 @@ Use the same Windows Command Prompt to enter the following in turn
 
 ```
 >py -m pip install requests
->py -m pip install sys
 >py -m pip install pandas
 >py -m pip install xlrd
 >py -m pip install regex
