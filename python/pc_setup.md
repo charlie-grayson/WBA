@@ -66,19 +66,19 @@ Open the Windows Command Prompt and change to the directory where you have store
 To upload an excel spreadsheet of issued certificates, run the following command
 
 ```
->py wba_cert_upload.py
+C:\Users\UserName> py wba_cert_upload.py
 ```
 
 To upload an excel spreadsheet of assigned identities, run the following command
 
 ```
->py wba_subid_upload.py
+C:\Users\UserName> py wba_subid_upload.py
 ```
 
 To upload an excel spreadsheet of new WBA Member IDs, run the following command (**WBA PMO ONLY**)
 
 ```
->py wba_member_upload.py
+C:\Users\UserName> py wba_member_upload.py
 ```
 
 The scripts will all prompt your for the filename corresponding to the *.xlsx to be uploaded.
