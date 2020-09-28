@@ -84,7 +84,7 @@ def check_regex(local_data):
     import re
 
     # REGEXP Checking
-    regexp = ["^[1-9][0-9]*$", ".*", "^[^_]*$", "^(([2]\d{3})(\-)((0[1-9]|1[0-2]))(\-)((0[1-9]|[12]\d|3[01])))$",
+    regexp = ["^[a-zA-Z0-9]*$", ".*", "^[^_]*$", "^(([2]\d{3})(\-)((0[1-9]|1[0-2]))(\-)((0[1-9]|[12]\d|3[01])))$",
               "^((End-Entity)|(Registration-Authority))$", "^((Issued)|(Revoked))$"]
 
     for index, row in local_data.iterrows():
