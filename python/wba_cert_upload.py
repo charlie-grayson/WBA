@@ -45,8 +45,8 @@ def enter_and_check_excel(path):
 
     pd.set_option('display.max_rows', None)
     check = False
-    cols = [1, 2, 3, 4, 5, 6]
-    resources = ["SerialNumber", "IssuerDnOrg", "SubjectDnUid", "ExpiryDate", "Type", "Status"]
+    cols = [1, 2, 3, 4, 5, 6, 7]
+    resources = ["SerialNumber", "IssuerDnOrg", "SubjectDnUid", "ExpiryDate", "Type", "Status", "DnsName"]
 
     while check == False:
         check = True
@@ -83,7 +83,7 @@ def enter_and_check_excel(path):
 def check_regex(local_data):
     import re
 
-    # REGEXP Checking
+    # REGEX Checking
     regexp = ["^[a-zA-Z0-9]*$", ".*", "^[^_]*$", "^(([2]\d{3})(\-)((0[1-9]|1[0-2]))(\-)((0[1-9]|[12]\d|3[01])))$",
               "^((End-Entity)|(Registration-Authority))$", "^((Issued)|(Revoked))$"]
 
@@ -99,7 +99,9 @@ def check_regex(local_data):
         else:
             print("Certificate Record ", index, "REGEXP check FAILED - please correct and try again")
             exit()
-
+    # REGEX checking of DnsName
+    # To Be Completed
+    
     return
 
 def post_data(local_data, local_url, local_apikey):
@@ -112,7 +114,9 @@ def post_data(local_data, local_url, local_apikey):
 
     print("Parsed Array Information")
     for index, row in local_data.iterrows():
-        json = "{ \"SerialNumber\": \"" + str(row['SerialNumber']) + "\" , \"IssuerDnOrg\": \"" + row['IssuerDnOrg'] + "\" , \"SubjectDnUid\": \"" + row['SubjectDnUid'] + "\", \"ExpiryDate\": \"" + row['ExpiryDate'] + "\", \"Type\": \"" + row ['Type'] + "\" , \"Status\": \"" + row ['Status'] + "\"  }"
+        json = "{ \"SerialNumber\": \"" + str(row['SerialNumber']) + "\" , \"IssuerDnOrg\": \"" + row['IssuerDnOrg'] + "\" , \"SubjectDnUid\": \"" + \
+        row['SubjectDnUid'] + "\", \"ExpiryDate\": \"" + row['ExpiryDate'] + "\", \"Type\": \"" + row ['Type'] + "\" , \"Status\": \"" + \
+        row ['Status'] + "\" , \"DnsName\": [" + row['DnsNames'] + "] }"
         # check that new database has same field names as above
         print (json)
         response = requests.post(local_url, headers=headers, data=json)
