@@ -89,11 +89,17 @@ def post_data(local_data, local_url, local_apikey):
 
     print("Parsed Array Information")
     for index, row in local_data.iterrows():
-        json = "{ \"Company\": \"" + row['Member'] + "\" , \"Category\": \"" + row[
-            'Type'] + "\",\"Contact\": \"" + row[
-            'Contact Person'] + "\", \"PrimaryID\": \"" + row['Company ID'] + "\", \"CountryCode\": \"" + row[
-                   'Country ISO (Opt)'] + "\" }"
-
+        
+    #check if country code is populated - it is optional:
+        if (row['Country ISO (Opt)'] != row['Country ISO (Opt)']):
+            # means that the country code is an empty cell so don't include it in json
+            json = "{ \"Company\": \"" + row['Member'] + "\" , \"Category\": \"" + row['Type'] + "\",\"Contact\": \"" + \
+            row['Contact Person'] + "\", \"PrimaryID\": \"" + row['Company ID'] + "\" }"
+        else:
+            json = "{ \"Company\": \"" + row['Member'] + "\" , \"Category\": \"" + row['Type'] + "\",\"Contact\": \"" + \
+            row['Contact Person'] + "\", \"PrimaryID\": \"" + row['Company ID'] + "\", \"CountryCode\": \"" + \
+            row['Country ISO (Opt)'] + "\" }"
+        
         # check that new database has same field names as above
         print (json)
         response = requests.post(local_url, headers=headers, data=json)
