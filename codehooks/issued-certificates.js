@@ -155,10 +155,9 @@ function beforePUT(req, res){
 // database logic to ensure only the holder of the API key is able to update
 // the status of a certificate from issued to revoked
 
-    log.debug("REQ.HINT: ",req.hint);
+//    log.debug("REQ.HINT: ",req.hint);
 
     var apikey = req.hint['#headers']["x-apikey"];
-    var issuer = req.body['IssuerDnOrg'];
     var objectquery = {objectID: req.body['objectID']};
     var issuerquery = {IssuerDnO: req.body['IssuerDnOrg']};
     var hint = {};
