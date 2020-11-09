@@ -15,10 +15,16 @@ var beforeGET = function(req, res) {
     // the usersession with valid email is used when the restdb web page requests the end-entities
     {
         
-        var apikey = req.hint['#headers']["x-apikey"];
-        var query = {IssuerAPIKey: req.hint['#headers']["x-apikey"]};
-        var hint = {};
-        var issuer = "";
+        let apikey = req.hint['#headers']["x-apikey"];
+        let query = {IssuerAPIKey: req.hint['#headers']["x-apikey"]};
+        let hint = {};
+        let issuer = "";
+
+        /// **** READ THIS ****
+        // test database has shared API key - so do not perform any filtering
+        // comment out this line in production
+        // res.send({"query": req.query});
+
 
         if (!apikey) {
         // no API-Key means GET was received from DB user interface and therefore needs
@@ -71,12 +77,13 @@ function beforePOST(req, res){
 
 //  log.debug("REQ.HINT: ",req.hint);
 
-    var slackhookurl = context.settings.slack.certurl;
-    var apikey = req.hint['#headers']["x-apikey"];
-    var issuer = req.body['IssuerDnOrg'];
-    var wbaidquery = {WBAID: req.body['SubjectDnUid']};
-    var issuerquery = {IssuerDnO : req.body['IssuerDnOrg']};
-    var hint = {};
+    let slackhookurl = context.settings.slack.certurl;
+    let who = req.hint['#usersession'].email || "REST API";
+    let apikey = req.hint['#headers']["x-apikey"];
+    let issuer = req.body['IssuerDnOrg'];
+    let wbaidquery = {WBAID: req.body['SubjectDnUid']};
+    let issuerquery = {IssuerDnO : req.body['IssuerDnOrg']};
+    let hint = {};
     
 // automatically populate the created field
     req.body['DateCreated'] = req.body['_created'];
@@ -118,17 +125,19 @@ function beforePOST(req, res){
                                 if(data2.length ===0){
                                     res.end({"error": {"statuscode": 400, "message": "WBAID in Subject DN UID does not exist"}});
                                 }
+                                else {
+                                    // now need to post issuance to SLACK 
+                                    var slackmatch = {
+                                        "message": `A new WBA certificate was issued by ${issuer} with Subject DN UID=${data2[0].WBAID} `,
+                                        "slackhookurl": slackhookurl,
+                                        "channel": "#cert-issuer"	
+                                    };
+                                    slack(slackmatch, function(body){
+                                        res.end({"data": req.body});
+                                    });
+                                }
                                 
-                                // now need to post issuance to SLACK 
-                                var slackmatch = {
-                                "message": `A new WBA certificate was issued by ${issuer} with Subject DN UID=${data2[0].WBAID} `,
-                                "slackhookurl": slackhookurl,
-                                "channel": "#subid-allocation"	
-                            // need to update with production channel for certificate announcements
-                            };
-                            slack(slackmatch, function(body){
-                                res.end();
-                            });
+                                
                                 
                             }
                             else {
@@ -157,9 +166,10 @@ function beforePUT(req, res){
 //    log.debug("REQ.HINT: ",req.hint);
 
     var apikey = req.hint['#headers']["x-apikey"];
-    var objectquery = {objectID: req.body['objectID']};
-    var issuerquery = {IssuerDnO: req.body['IssuerDnOrg']};
-    var hint = {};
+    var issuer = req.body['IssuerDnOrg'];
+    let objectquery = {objectID: req.body['objectID']};
+    let issuerquery = {IssuerDnO: req.body['IssuerDnOrg']};
+    let hint = {};
 
     if (!apikey) {
         // no API-Key means PUT was received from user interface
@@ -224,8 +234,3 @@ function beforePUT(req, res){
         }
     }
 }
-
-
-
-
-
