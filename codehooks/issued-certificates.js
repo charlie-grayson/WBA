@@ -72,7 +72,6 @@ function beforePOST(req, res){
 //  log.debug("REQ.HINT: ",req.hint);
 
     var slackhookurl = context.settings.slack.certurl;
-    var who = req.hint['#usersession'].email || "REST API";
     var apikey = req.hint['#headers']["x-apikey"];
     var issuer = req.body['IssuerDnOrg'];
     var wbaidquery = {WBAID: req.body['SubjectDnUid']};
