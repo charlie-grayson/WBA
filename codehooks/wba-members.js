@@ -6,7 +6,6 @@ function beforePOST(req, res){
 //  log.debug("REQ.HINT: ",req.hint);
 
     var slackhookurl = context.settings.slack.url;
-    var who = req.hint['#usersession'].email || "REST API";
     var slackmatch = {
         "message": `WBA PMO created a new Primary WBA Identity, \n WBAID=${req.body['WBAID']} `,
         "slackhookurl": slackhookurl,
