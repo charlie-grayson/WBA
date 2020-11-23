@@ -3,7 +3,7 @@
 function beforeGET(req, res){
 // database logic to ensure only the holder of the master API key is able to GET
 // the WBA member list
-
+   
     if (!req.hint['#headers']){
         // no headers means GET was received from DB user interface and therefore needs
         res.end();
@@ -24,7 +24,7 @@ function beforeGET(req, res){
         }
     }
 }
-
+    
 
 // Codehook to report creation of new WBA Member
 function beforePOST(req, res){
@@ -35,31 +35,31 @@ function beforePOST(req, res){
     var apikey = req.hint['#headers']["x-apikey"];
 
     // ensure all WBAIDs are upper case
-
+    
     var masterID = req.body['PrimaryID'].toUpperCase();
     var countryCode = req.body['CountryCode'];
     var WBAID;
-
+    
     if (!countryCode){
         WBAID = masterID;
     }
     else {
         WBAID = masterID + ":" + countryCode.toUpperCase();
     }
-
-
+    
+    
     var slackmatch = {
             "message": `WBA PMO created a new Primary WBA Identity, \n WBAID=${WBAID} `,
             "slackhookurl": slackhookurl,
-            "channel": "#new-member"
-    }
-
+            "channel": "#wba-db-new-member"
+    };
+    
     req.body['WBAID'] = WBAID;
     req.body['PrimaryID'] = masterID;
     res.end({"data": req.body});
-
-
-
+    
+    
+    
     // valid API key means received over API
     if (!apikey) {
         // no API-Key means POST was received from DB user interface and therefore needs
@@ -77,9 +77,9 @@ function beforePOST(req, res){
         }
         else {
             res.end({"error": {"statuscode": 400, "message": "API key does not have permission to POST to WBA member collection"}});
-        }
+        } 
     }
-
+    
 }
 
 function beforePUT(req, res){
