@@ -81,23 +81,35 @@ function beforePOST(req, res){
     let who = req.hint['#usersession'].email || "REST API";
     let apikey = req.hint['#headers']["x-apikey"];
     let issuer = req.body['IssuerDnOrg'];
-    let wbaidquery = {WBAID: req.body['SubjectDnUid']};
+    let wbaidquery = {WBAID: req.body['SubjectDnUid'].toUpperCase()};
     let issuerquery = {IssuerDnO : req.body['IssuerDnOrg']};
     let hint = {};
     
 // automatically populate the created field
     req.body['DateCreated'] = req.body['_created'];
 
+    var slackpmo = {
+        "message": `WBA PMO entered a new WBA certificate, issued by ${issuer} with WBAID=${req.body['SubjectDnUid']} `,
+        "slackhookurl": slackhookurl,
+        "channel": "#wba-db-certificate-issued"
+    };
+
     
     if (!apikey) {
         // no API-Key means POST was received from user interface
+        slack(slackpmo, function(body){
             res.end({"data": req.body});
+        });
+
     }
     else {
     // valid API key means received over API
        if (apikey == context.settings.apikeys.master){
             // API key is master API key - so do not perform checking
-           res.end({"data": req.body});
+            slack(slackpmo, function(body){
+                res.end({"data": req.body});
+            });
+
         }
         else {
             
@@ -126,15 +138,22 @@ function beforePOST(req, res){
                                     res.end({"error": {"statuscode": 400, "message": "WBAID in Subject DN UID does not exist"}});
                                 }
                                 else {
-                                    // now need to post issuance to SLACK 
-                                    var slackmatch = {
-                                        "message": `A new WBA certificate was issued by ${issuer} with Subject DN UID=${data2[0].WBAID} `,
-                                        "slackhookurl": slackhookurl,
-                                        "channel": "#cert-issuer"	
-                                    };
-                                    slack(slackmatch, function(body){
-                                        res.end({"data": req.body});
-                                    });
+                                    // need to check whether member has left the WBA, i.e., WBAID is void
+                                    if (data2[0].void) {
+                                        res.end({"error": {"statuscode": 400, "message": "WBAID in Subject DN UID has been voided by PMO"}});
+                                    }
+                                    else {
+                                        // now need to post issuance to SLACK 
+                                        var slackmatch = {
+                                            "message": `A new WBA certificate was issued by ${issuer} with Subject DN UID=${data2[0].WBAID} `,
+                                            "slackhookurl": slackhookurl,
+                                            "channel": "#wba-db-certificate-issued"
+                                        };
+                                        slack(slackmatch, function(body){
+                                            res.end({"data": req.body});
+                                        });
+                                    }
+                                    
                                 }
                                 
                                 
