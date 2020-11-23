@@ -5,8 +5,9 @@
     "address": "Wireless Broadband Alliance <WBA@wballiance.com>"
   },
   "slack": {
-    "url": "<insert production slack URL for sub ID here>",
+    "subidurl": "<insert production slack URL for sub ID here>",
     "certurl": "<insert production slack URL for certificate issuance here>",
+    "memberurl": "<insert production slack URL for new members here>"
   },
   "apikeys": {
     "master": "<insert master API key here>"
