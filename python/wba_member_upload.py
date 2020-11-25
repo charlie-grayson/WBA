@@ -9,7 +9,7 @@ def set_api_and_url(filename):
     # MEMBER-URL:<URL of member database>
     # SUBID-URL:<URL of end-entity database>
     # CERT-URL:<URL of certificate database>
-    # API-KEY:<Master API key for database>
+    # API-KEY:<API key for database>
 
     # config.txt file must be in same directoy as python .py
 
@@ -30,7 +30,7 @@ def set_api_and_url(filename):
 def validate_url(local_url):
     import re
     
-    # REGEX Checking against expression for valid URL
+    # Regular Expression Checking against expression for valid URL
     # catches situation where user has not edited default config file
     url_regex = "^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$"
     if not re.match(url_regex, local_url):
