@@ -9,7 +9,7 @@ def set_api_and_url(filename):
     # MEMBER-URL:<URL of member database>
     # SUBID-URL:<URL of end-entity database>
     # CERT-URL:<URL of certificate database>
-    # API-KEY:<Master API key for database>
+    # API-KEY:<API key for database>
 
     # config.txt file must be in same directoy as python .py
 
