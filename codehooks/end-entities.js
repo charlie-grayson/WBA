@@ -35,6 +35,8 @@ var beforeGET = function(req, res) {
                 // collestion, which company was allocated the API key
                 // NOTE - IT IS ASSUMED THAT AN API KEY IS ONLY ALLOCATED TO A
                 // SINGLE MEMBER
+                
+                // use db.get function to see who has been allocated the API key
 
                 db.get("/rest/wba-members",query,hint,function (err,data) {
                     if (!err){
@@ -83,7 +85,7 @@ function beforePOST(req, res){
     // automatically populate the date created field for all posts
     req.body['DateCreated'] = req.body['_created'];
 
-    // ensure all WBAIDs are upper case
+    // ensure all WBAIDs are upper case by over-writing WBAID field with .toUpperCase value
     
     req.body['WBAID'] = wbaid;
     
@@ -106,7 +108,8 @@ function beforePOST(req, res){
     // valid API key means received over API
         if (apikey == context.settings.apikeys.master){
             // API key is master API key - so do not perform checking
-            // WBA PMO an use this API key to perform uploads of xls
+            // WBA PMO can use this API key to perform uploads of xls
+            // e.g., using python scripts
                 
             slack(slackpmo, function(body){
                 res.end({"data": req.body});
@@ -115,8 +118,9 @@ function beforePOST(req, res){
         else {
             // API key is present and NOT the master key
 
- //checking syntax of subID - cannot contain "_" or ":" characters
-            //strip of primary ID to form subId
+            //checking syntax of subID - cannot contain "_" or ":" characters
+            //strip of primary ID to form subId 
+            // Format is subId + "." + primaryID - so strip from right most "."
             subId = wbaid.substring(0,wbaid.lastIndexOf("."));
             if (subId.includes('_')){
                 syntaxCheck=1;
@@ -130,9 +134,10 @@ function beforePOST(req, res){
             }
             else {
                 // WBAID is syntatically valid - and so recover master ID
+                // master ID is on right of right most "."
                 masterId = wbaid.substring(1+wbaid.lastIndexOf("."));
                 
-                // query is the WBA Agent listed in the POST and so seach master ID DB for Agent
+                // query is the company name of the WBA Agent listed in the POST and so search master ID DB for Agent
                 db.get("/rest/wba-members",query,hint,function (err,data) {
                     if (!err){
                         // check if the Company exists in the database
@@ -146,7 +151,7 @@ function beforePOST(req, res){
                             }
                             else {
                                 if (data[0].WBAID.toUpperCase()!=masterId.toUpperCase()) {
-                                res.end({"error": {"statuscode": 400, "message": "WBA Member ID badly formatted"}});
+                                  res.end({"error": {"statuscode": 400, "message": "WBA Member ID badly formatted"}});
                                 }
                                 else {
                                     var slackmatch = {
@@ -178,7 +183,7 @@ function beforePOST(req, res){
 function afterPOST(req, res){
     // 1. load an email template from the database
     if (req.body.WBAMember == "Yes") {
-        // do not send a welcome email
+        // do not send a welcome email to WBA members
         res.end();
     }
     
@@ -240,7 +245,8 @@ function euSendMail(body, callback) {
 
 function beforePUT(req, res){
 // database logic to ensure only the holder of the master API key is able to update
-// the status of an end entity
+// the status of an end entity - PMO will set the void field to true when an end-entity
+// leaves
 
     var apikey = req.hint['#headers']["x-apikey"];
     var slackhookurl = context.settings.slack.subidurl;
@@ -253,12 +259,13 @@ function beforePUT(req, res){
     if (!apikey) {
     // no API-Key means POST was received from user interface - so permit updates
         if (req.body.void) {
-            // WBAID has been voided
+            // WBAID has been voided and so send information to slack channel
             slack(slackpmo, function(body){
                 res.end({"data": req.body});
             });
         }
         else {
+            // and check where void isn't set to true simply update the record
             res.end({"data": req.body});
         }
         
