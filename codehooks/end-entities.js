@@ -38,7 +38,7 @@ var beforeGET = function(req, res) {
 
                 db.get("/rest/wba-members",query,hint,function (err,data) {
                     if (!err){
-                // new code needed as an API key may not enable access to end-entities 
+                // new code needed as an API key may not enable access to end-entities
                 // in which case the query will be null
                         if(data.length ===0){
                             res.end({"error": {"statuscode": 400, "message": "API key doesn't permit access to End-Entity collection"}});
@@ -67,7 +67,7 @@ var beforeGET = function(req, res) {
 
 
 function beforePOST(req, res){
-// database logic to ensure only a WBA membar with an allocated API key is 
+// database logic to ensure only a WBA membar with an allocated API key is
 // able to allocate identities under its primary ID
 
 //  log.debug("REQ.HINT: ",req.hint);
@@ -79,24 +79,24 @@ function beforePOST(req, res){
   let query = {Company: req.body['WBAAgent']};
   let hint = {};
   var syntaxCheck = 0;
-  
+
     // automatically populate the date created field for all posts
     req.body['DateCreated'] = req.body['_created'];
 
     // ensure all WBAIDs are upper case
-    
+
     req.body['WBAID'] = wbaid;
-    
+
     var slackpmo = {
         "message": `WBA PMO created a new WBA SubID, WBAID=${req.body['WBAID']} `,
         "slackhookurl": slackhookurl,
         "channel": "#wba-db-subid-assigned"
     };
-    
+
     if (!apikey) {
         // no API-Key means POST was received from user interface
         // this allows WBA PMO to create subIDs from the GUI
-        
+
         slack(slackpmo, function(body){
             res.end({"data": req.body});
         });
@@ -107,7 +107,7 @@ function beforePOST(req, res){
         if (apikey == context.settings.apikeys.master){
             // API key is master API key - so do not perform checking
             // WBA PMO an use this API key to perform uploads of xls
-                
+
             slack(slackpmo, function(body){
                 res.end({"data": req.body});
             });
@@ -131,7 +131,7 @@ function beforePOST(req, res){
             else {
                 // WBAID is syntatically valid - and so recover master ID
                 masterId = wbaid.substring(1+wbaid.lastIndexOf("."));
-                
+
                 // query is the WBA Agent listed in the POST and so seach master ID DB for Agent
                 db.get("/rest/wba-members",query,hint,function (err,data) {
                     if (!err){
@@ -149,27 +149,43 @@ function beforePOST(req, res){
                                 res.end({"error": {"statuscode": 400, "message": "WBA Member ID badly formatted"}});
                                 }
                                 else {
-                                    var slackmatch = {
-                                        "message": `A new WBA Identity has been assigned by ${data[0].Company} \n WBAID=${req.body['WBAID']} `,
-                                        "slackhookurl": slackhookurl,
-                                        "channel": "#wba-db-subid-assigned"	
-                                    };
-                                    slack(slackmatch, function(body){
-                                        res.end({"data": req.body});
+                                  // new code to check if wbaid already exists in the end-entity collection
+                                    let wbaidQuery = {WBAID: wbaid};
+                                    db.get("/rest/end-entities",wbaidQuery,hint,function (err2,data2) {
+                                        if (!err2){
+                                          if(data2.length >0){
+                                              res.end({"error": {"statuscode": 400, "message": "WBAID already exists in the end-entity collection - use PUT not POST"}});
+                                          }
+                                          else {
+                                              var slackmatch = {
+                                                  "message": `A new WBA Identity has been assigned by ${data[0].Company} \n WBAID=${req.body['WBAID']} `,
+                                                  "slackhookurl": slackhookurl,
+                                                  "channel": "#wba-db-subid-assigned"
+                                              };
+                                              slack(slackmatch, function(body){
+                                                  res.end({"data": req.body});
+                                              });
+                                          }
+                                        }
+                                        else {
+                                            log.error("db.get error was generated from API call sent by WBAID :", wbaAgent);
+                                            res.end({"error": {"statuscode": 400, "message": "db.get error was generated from API call"}});
+                                        }
                                     });
+
                                 }
 
                             }
-                        
+
                         }
                     }
                     else {
                         log.error("db.get error was generated from API call sent by WBAID :", wbaAgent);
                         res.end({"error": {"statuscode": 400, "message": "db.get error was generated from API call"}});
                     }
-                    
+
                 });
-                
+
             }
         }
     }
@@ -181,9 +197,9 @@ function afterPOST(req, res){
         // do not send a welcome email
         res.end();
     }
-    
+
     db.get('/rest/emailtemplates',{title: "Welcome"}, {}, function(error, data){
-            
+
         // 2. merge record with email template
         var htmlmail = template(data[0].template, req.body);
         var mailopt = {
@@ -193,7 +209,7 @@ function afterPOST(req, res){
             company: "Wireless Broadband Alliance", // Email footer
             sendername: "WBA Automated Email" // Email sendername, hides the email address
         };
-        
+
         // 3. send email
 //        log.debug("email template is: ", mailopt);
         sendMail(mailopt, function(error, body){
@@ -208,7 +224,7 @@ function afterPOST(req, res){
     });
 }
 
-// standard restdb.io sendmail does not use the EU version, i.e., sends to 
+// standard restdb.io sendmail does not use the EU version, i.e., sends to
 // api.mailgun.net AND NOT api.eu.mailgun.net
 function euSendMail(body, callback) {
     var YOUR_DOMAIN_NAME = context.settings.mailgun.domain;
@@ -224,13 +240,13 @@ function euSendMail(body, callback) {
             from: context.settings.mailgun.address,
             to: body.to,
             subject: body.subject,
-            html: body.html 
+            html: body.html
         }
     };
 //    log.info("Sending mail with Mailgun...");
 //    log.debug("email post is: ", options);
-    
-    
+
+
     request(options, function (error, response, body) {
       if (error) throw new Error(error);
 
@@ -261,7 +277,7 @@ function beforePUT(req, res){
         else {
             res.end({"data": req.body});
         }
-        
+
     }
     else {
         // valid API key means received over API
@@ -273,7 +289,5 @@ function beforePUT(req, res){
             res.end({"error": {"statuscode": 400, "message": "API key does not have permission to update any record"}});
         }
     }
-    
-}
 
-            
+}
